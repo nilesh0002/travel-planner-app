@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import heroImage from '../assets/hero.png';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -25,41 +26,111 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       localStorage.setItem('travel_user', JSON.stringify(res.data.user));
       onLogin(res.data.user);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed');
+      setError(err.response?.data?.error || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <main className="container animate-fade-in" style={{ maxWidth: '400px', marginTop: '4rem' }}>
-      <div className="glass-panel" style={{ padding: '2.5rem' }}>
-        <h1 style={{ textAlign: 'center', marginBottom: '0.5rem' }}>Welcome Back</h1>
-        <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '2rem' }}>
-          Login to your travel planner
-        </p>
-
-        {error && <div style={{ color: '#ff4444', marginBottom: '1rem', textAlign: 'center' }}>{error}</div>}
-
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email Address</label>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
+    <div style={{ 
+      display: 'flex', 
+      minHeight: 'calc(100vh - 80px)',
+      gap: '4rem',
+      alignItems: 'center'
+    }} className="animate-fade-in">
+      
+      {/* Left Side: Hero */}
+      <div style={{ 
+        flex: 1, 
+        display: 'none', 
+        '@media (min-width: 1024px)': { display: 'block' } 
+      } as any}>
+        <div style={{ position: 'relative' }}>
+          <img 
+            src={heroImage} 
+            alt="Travel" 
+            style={{ 
+              width: '100%', 
+              height: '600px', 
+              objectFit: 'cover', 
+              borderRadius: '24px',
+              boxShadow: '0 30px 60px rgba(0,0,0,0.5)'
+            }} 
+          />
+          <div style={{ 
+            position: 'absolute', 
+            bottom: '40px', 
+            left: '40px', 
+            right: '40px',
+            padding: '2rem',
+            background: 'rgba(0,0,0,0.4)',
+            backdropFilter: 'blur(10px)',
+            borderRadius: '16px',
+            border: '1px solid rgba(255,255,255,0.1)'
+          }}>
+            <h2 style={{ fontSize: '2.5rem', fontWeight: '800', lineHeight: '1.1' }}>Adventure awaits.</h2>
+            <p style={{ marginTop: '1rem', color: '#cbd5e1', fontSize: '1.1rem' }}>
+              Plan your next journey with the world's most intuitive itinerary planner.
+            </p>
           </div>
-          <div className="form-group">
-            <label>Password</label>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-          </div>
-          <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
-        </form>
-
-        <p style={{ textAlign: 'center', marginTop: '2rem', fontSize: '0.9rem' }}>
-          Don't have an account? <Link to="/signup" style={{ color: 'var(--primary)' }}>Sign Up</Link>
-        </p>
+        </div>
       </div>
-    </main>
+
+      {/* Right Side: Form */}
+      <div style={{ flex: '0 0 450px', margin: '0 auto' }}>
+        <div className="glass-panel" style={{ padding: '3rem' }}>
+          <h1 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.5rem' }}>Welcome Back</h1>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+            Enter your credentials to access your trips.
+          </p>
+
+          {error && (
+            <div style={{ 
+              background: 'rgba(239, 68, 68, 0.1)', 
+              color: '#f87171', 
+              padding: '1rem', 
+              borderRadius: '12px', 
+              marginBottom: '1.5rem',
+              fontSize: '0.9rem',
+              border: '1px solid rgba(239, 68, 68, 0.2)'
+            }}>
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label>Email Address</label>
+              <input 
+                type="email" 
+                placeholder="nilesh@example.com"
+                value={email} 
+                onChange={e => setEmail(e.target.value)} 
+                required 
+              />
+            </div>
+            <div className="form-group">
+              <label>Password</label>
+              <input 
+                type="password" 
+                placeholder="••••••••"
+                value={password} 
+                onChange={e => setPassword(e.target.value)} 
+                required 
+              />
+            </div>
+            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
+              {loading ? 'Authenticating...' : 'Sign In'}
+            </button>
+          </form>
+
+          <p style={{ textAlign: 'center', marginTop: '2.5rem', color: 'var(--text-muted)' }}>
+            New traveler? <Link to="/signup" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>Create an account</Link>
+          </p>
+        </div>
+      </div>
+    </div>
   );
 };
 
