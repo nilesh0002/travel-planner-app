@@ -45,10 +45,10 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
     }} className="animate-fade-in">
       
       {/* Left Side: Form */}
-      <div style={{ flex: '0 0 450px', margin: '0 auto' }}>
-        <div className="glass-panel" style={{ padding: '3rem' }}>
-          <h1 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.5rem' }}>Start Journey</h1>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+        <div className="glass-panel login-card">
+          <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.75rem', letterSpacing: '-1px' }}>Start Journey</h1>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1.05rem' }}>
             Create an account to start planning your trips.
           </p>
 

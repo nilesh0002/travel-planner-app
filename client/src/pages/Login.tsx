@@ -89,10 +89,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       </div>
 
       {/* Right Side: Form */}
-      <div style={{ flex: 1, maxWidth: '450px', width: '100%', margin: '0 auto' }}>
-        <div className="glass-panel" style={{ padding: '3rem' }}>
-          <h1 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.5rem' }}>Welcome Back</h1>
-          <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
+        <div className="glass-panel login-card">
+          <h1 style={{ fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.75rem', letterSpacing: '-1px' }}>Welcome Back</h1>
+          <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1.05rem' }}>
             Enter your credentials to access your trips.
           </p>
 
