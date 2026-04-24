@@ -26,7 +26,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({ message: 'User created' });
   } catch (error) {
     console.error('Registration Error:', error);
-    res.status(500).json({ error: `Registration failed: ${error.message}` });
+    res.status(500).json({ error: 'Registration failed. This email might already be in use.' });
   }
 });
 
