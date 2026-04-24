@@ -1,15 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import { User } from '@supabase/supabase-js';
-
-const API_URL: string = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
-interface CreateTripProps {
-  user: User;
-}
-
-const CreateTrip: React.FC<CreateTripProps> = ({ user }) => {
+const CreateTrip: React.FC = () => {
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -26,7 +18,7 @@ const CreateTrip: React.FC<CreateTripProps> = ({ user }) => {
         title,
         start_date: startDate,
         end_date: endDate,
-        user_id: user.id
+        user_id: 'default-user'
       });
       navigate('/'); // Go back to dashboard
     } catch (err) {

@@ -6,19 +6,15 @@ import { Trip } from '../types';
 
 const API_URL: string = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
-interface DashboardProps {
-  user: User;
-}
-
-const Dashboard: React.FC<DashboardProps> = ({ user }) => {
+const Dashboard: React.FC = () => {
   const [trips, setTrips] = useState<Trip[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // Get all trips for the current user
+  // Get all trips (using a default user ID since login is removed)
   useEffect(() => {
     const fetchTrips = async () => {
       try {
-        const response = await axios.get<Trip[]>(`${API_URL}/trips/${user.id}`);
+        const response = await axios.get<Trip[]>(`${API_URL}/trips/default-user`);
         setTrips(response.data);
       } catch (err) {
         console.error('Failed to load trips:', err);
@@ -27,8 +23,8 @@ const Dashboard: React.FC<DashboardProps> = ({ user }) => {
       }
     };
 
-    if (user) fetchTrips();
-  }, [user]);
+    fetchTrips();
+  }, []);
 
   if (loading) {
     return <div className="container"><h2>Loading your trips...</h2></div>;
