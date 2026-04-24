@@ -30,7 +30,10 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
       onSignup(res.data.user);
       navigate('/');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Registration failed');
+      console.error('Signup Error:', err);
+      const serverMsg = err.response?.data?.error;
+      const networkError = !err.response ? 'Connection failed. Check Vercel Env Variables!' : '';
+      setError(serverMsg || networkError || 'Registration failed');
     } finally {
       setLoading(false);
     }

@@ -26,7 +26,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       localStorage.setItem('travel_user', JSON.stringify(res.data.user));
       onLogin(res.data.user);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Invalid email or password');
+      console.error('Login Error:', err);
+      const serverMsg = err.response?.data?.error;
+      const networkError = !err.response ? 'Connection failed. Check Vercel Env Variables!' : '';
+      setError(serverMsg || networkError || 'Invalid email or password');
     } finally {
       setLoading(false);
     }
