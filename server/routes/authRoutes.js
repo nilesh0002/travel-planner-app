@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
-const prisma = new PrismaClient();
+const prisma = require('../config/db');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'super-secret-key-123';
 
@@ -26,7 +25,8 @@ router.post('/register', async (req, res) => {
 
     res.status(201).json({ message: 'User created' });
   } catch (error) {
-    res.status(500).json({ error: 'Registration failed' });
+    console.error('Registration Error:', error);
+    res.status(500).json({ error: `Registration failed: ${error.message}` });
   }
 });
 
