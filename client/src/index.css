@@ -1,17 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
-  --bg-dark: #020617;
-  --bg-card: rgba(30, 41, 59, 0.5);
-  --primary: #38bdf8;
-  --primary-glow: rgba(56, 189, 248, 0.4);
-  --secondary: #818cf8;
-  --text-white: #f8fafc;
+  --bg-dark: #041014;
+  --bg-card: rgba(13, 31, 38, 0.6);
+  --primary: #2dd4bf; /* Vibrant Teal */
+  --primary-glow: rgba(45, 212, 191, 0.3);
+  --secondary: #0ea5e9; /* Ocean Blue */
+  --text-white: #f0fdfa;
   --text-muted: #94a3b8;
-  --accent: #f472b6;
-  --border: rgba(255, 255, 255, 0.08);
-  --glass-bg: rgba(15, 23, 42, 0.7);
-  --glass-border: rgba(255, 255, 255, 0.1);
+  --accent: #5eead4; /* Seafoam */
+  --border: rgba(45, 212, 191, 0.1);
+  --glass-bg: rgba(4, 16, 20, 0.75);
+  --glass-border: rgba(45, 212, 191, 0.15);
   --radius: 16px;
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -28,8 +28,8 @@ body {
   font-family: 'Outfit', sans-serif;
   background-color: var(--bg-dark);
   background-image: 
-    radial-gradient(at 0% 0%, hsla(202, 100%, 70%, 0.1) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, hsla(263, 100%, 70%, 0.1) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, hsla(174, 100%, 70%, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(199, 100%, 70%, 0.08) 0px, transparent 50%);
   color: var(--text-white);
   line-height: 1.6;
   min-height: 100vh;
