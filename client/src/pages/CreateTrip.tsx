@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-const CreateTrip: React.FC = () => {
+interface CreateTripProps {
+  userId: string;
+}
+
+const CreateTrip: React.FC<CreateTripProps> = ({ userId }) => {
   const [title, setTitle] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
@@ -18,7 +22,7 @@ const CreateTrip: React.FC = () => {
         title,
         start_date: startDate,
         end_date: endDate,
-        user_id: 'default-user'
+        user_id: userId
       });
       navigate('/'); // Go back to dashboard
     } catch (err) {
