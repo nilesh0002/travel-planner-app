@@ -40,7 +40,7 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
 
   return (
     <main className="animate-fade-in">
-      <header style={{ 
+      <header className="dashboard-header" style={{ 
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'flex-end',
@@ -48,6 +48,16 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
         borderBottom: '1px solid var(--border)',
         paddingBottom: '2rem'
       }}>
+        <style>{`
+          @media (max-width: 768px) {
+            .dashboard-header {
+              flex-direction: column !important;
+              align-items: flex-start !important;
+              gap: 2rem !important;
+              margin-bottom: 2.5rem !important;
+            }
+          }
+        `}</style>
         <div>
           <h1 style={{ fontSize: '3rem', fontWeight: '800', letterSpacing: '-1.5px' }}>My Adventures</h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '0.5rem' }}>

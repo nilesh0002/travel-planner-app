@@ -14,6 +14,16 @@ import Navbar from './components/Navbar';
 const App: React.FC = () => {
   const [user, setUser] = useState<{ id: string, email: string, name?: string } | null>(null);
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState<'dark' | 'light'>(
+    (localStorage.getItem('travel_theme') as 'dark' | 'light') || 'dark'
+  );
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+    localStorage.setItem('travel_theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => setTheme(prev => prev === 'dark' ? 'light' : 'dark');
 
   useEffect(() => {
     // Check for saved user in localStorage
@@ -34,7 +44,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <Navbar user={user} onLogout={handleLogout} />
+      <Navbar user={user} onLogout={handleLogout} theme={theme} onToggleTheme={toggleTheme} />
       <div className="container">
         <Routes>
           <Route path="/login" element={!user ? <Login onLogin={setUser} /> : <Navigate to="/" />} />

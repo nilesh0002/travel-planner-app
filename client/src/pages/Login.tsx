@@ -35,17 +35,28 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   return (
     <div style={{ 
       display: 'flex', 
-      minHeight: 'calc(100vh - 80px)',
-      gap: '4rem',
-      alignItems: 'center'
-    }} className="animate-fade-in">
+      flexDirection: 'column',
+      minHeight: 'calc(100vh - 120px)',
+      gap: '2rem',
+      justifyContent: 'center',
+      padding: '1rem 0'
+    }} className="animate-fade-in login-container">
+      
+      <style>{`
+        @media (min-width: 1024px) {
+          .login-container { 
+            flex-direction: row !important;
+            gap: 4rem !important;
+          }
+          .hero-side { display: block !important; }
+        }
+      `}</style>
       
       {/* Left Side: Hero */}
-      <div style={{ 
+      <div className="hero-side" style={{ 
         flex: 1, 
-        display: 'none', 
-        '@media (min-width: 1024px)': { display: 'block' } 
-      } as any}>
+        display: 'none'
+      }}>
         <div style={{ position: 'relative' }}>
           <img 
             src={heroImage} 
@@ -78,7 +89,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       </div>
 
       {/* Right Side: Form */}
-      <div style={{ flex: '0 0 450px', margin: '0 auto' }}>
+      <div style={{ flex: 1, maxWidth: '450px', width: '100%', margin: '0 auto' }}>
         <div className="glass-panel" style={{ padding: '3rem' }}>
           <h1 style={{ fontSize: '2.2rem', fontWeight: '800', marginBottom: '0.5rem' }}>Welcome Back</h1>
           <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem' }}>
