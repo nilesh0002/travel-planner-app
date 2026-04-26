@@ -76,49 +76,93 @@ const TripDetails: React.FC = () => {
     }
   };
 
-  if (loading) return <div className="container"><h2>Loading itinerary...</h2></div>;
+  if (loading) return (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
+      <h2 className="text-gradient">Loading itinerary...</h2>
+    </div>
+  );
   if (!trip) return <div className="container"><h2>Adventure not found</h2></div>;
 
+  const getTypeIcon = (type: ItemType) => {
+    switch(type) {
+      case 'Flight': return '✈️';
+      case 'Hotel': return '🏨';
+      case 'Food': return '🍽️';
+      default: return '🎡';
+    }
+  };
+
   return (
-    <main className="animate-fade-in">
-      <header style={{ marginBottom: '3rem', paddingBottom: '2rem', borderBottom: '1px solid var(--border)' }}>
-        <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}>
-          ← Back to Adventures
+    <main className="animate-fade-in" style={{ paddingBottom: '5rem' }}>
+      <header style={{ marginBottom: '4rem' }}>
+        <Link to="/" style={{ 
+          color: 'var(--text-muted)', 
+          textDecoration: 'none', 
+          fontSize: '0.95rem', 
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginBottom: '2rem'
+        }}>
+          ← Back to Dashboard
         </Link>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1.5rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem' }}>
           <div>
-            <h1 style={{ fontSize: '3rem', fontWeight: '800', letterSpacing: '-1.5px' }}>{trip.title}</h1>
-            <div style={{ marginTop: '0.5rem', display: 'flex', gap: '1.5rem', color: 'var(--text-muted)' }}>
-              <span>📅 {new Date(trip.start_date).toLocaleDateString()} - {new Date(trip.end_date).toLocaleDateString()}</span>
-              <span>📍 {items.length} Activities planned</span>
+            <h1 style={{ fontSize: '3.5rem', fontWeight: '800' }}>{trip.title}</h1>
+            <div style={{ marginTop: '0.75rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <span style={{ fontSize: '1.2rem' }}>📅</span>
+                <span style={{ fontWeight: '500' }}>{new Date(trip.start_date).toLocaleDateString()} — {new Date(trip.end_date).toLocaleDateString()}</span>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
+                <span style={{ fontSize: '1.2rem' }}>📍</span>
+                <span style={{ fontWeight: '500' }}>{items.length} Activities</span>
+              </div>
             </div>
           </div>
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <button onClick={handleDeleteTrip} className="btn-secondary" style={{ color: '#f87171' }}>Delete Trip</button>
-            <button onClick={() => setShowForm(!showForm)} className="btn-primary">
-              {showForm ? 'Cancel' : '+ Add Item'}
+            <button onClick={handleDeleteTrip} style={{ 
+              background: 'rgba(239, 68, 68, 0.1)', 
+              color: '#f87171',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              padding: '0.8rem 1.5rem',
+              borderRadius: '12px',
+              fontWeight: '600',
+              cursor: 'pointer'
+            }}>Delete Trip</button>
+            <button onClick={() => setShowForm(!showForm)} className="btn-primary" style={{ padding: '0.8rem 2rem' }}>
+              {showForm ? 'Cancel' : '+ Add Activity'}
             </button>
           </div>
         </div>
       </header>
 
       {showForm && (
-        <section className="glass-panel" style={{ padding: '3rem', marginBottom: '3rem' }}>
-          <h2 style={{ marginBottom: '1.5rem' }}>What's the next step?</h2>
+        <section className="glass-panel animate-fade-in" style={{ padding: '3rem', marginBottom: '4rem' }}>
+          <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem' }}>Add New Activity</h2>
           <form onSubmit={handleAddItem}>
             <div className="form-group">
               <label>Activity Title</label>
-              <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} required placeholder="e.g. Dinner at Shibuya Sky" />
+              <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} required placeholder="e.g. Morning Walk at Central Park" />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
               <div className="form-group">
                 <label>Day Number</label>
                 <input type="number" min="1" value={newDay} onChange={e => setNewDay(parseInt(e.target.value))} required />
               </div>
               <div className="form-group">
                 <label>Category</label>
-                <select value={newType} onChange={e => setNewType(e.target.value as ItemType)}>
+                <select value={newType} onChange={e => setNewType(e.target.value as ItemType)} style={{
+                   width: '100%',
+                   padding: '0.8rem 1.2rem',
+                   background: 'rgba(255, 255, 255, 0.03)',
+                   border: '1px solid var(--glass-border)',
+                   borderRadius: '12px',
+                   color: 'var(--text-main)',
+                   fontSize: '1rem'
+                }}>
                   <option value="Activity">🎡 Activity</option>
                   <option value="Flight">✈️ Flight</option>
                   <option value="Hotel">🏨 Hotel</option>
@@ -127,40 +171,87 @@ const TripDetails: React.FC = () => {
               </div>
               <div className="form-group">
                 <label>Time (Optional)</label>
-                <input type="text" placeholder="e.g. 09:00 PM" value={newTime} onChange={e => setNewTime(e.target.value)} />
+                <input type="text" placeholder="e.g. 09:00 AM" value={newTime} onChange={e => setNewTime(e.target.value)} />
               </div>
             </div>
-            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Add to Timeline</button>
+            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem', padding: '1.2rem' }}>Add to Timeline</button>
           </form>
         </section>
       )}
 
-      <section>
+      <section style={{ position: 'relative' }}>
+        {/* Timeline Line */}
+        <div style={{
+          position: 'absolute',
+          left: '25px',
+          top: '0',
+          bottom: '0',
+          width: '2px',
+          background: 'linear-gradient(to bottom, var(--primary), var(--secondary))',
+          opacity: 0.3,
+          zIndex: 0
+        }}></div>
+
         {items.length === 0 ? (
-          <div className="glass-panel" style={{ textAlign: 'center', padding: '4rem' }}>
-            <p style={{ color: 'var(--text-muted)' }}>Your timeline is empty. Start adding activities!</p>
+          <div className="glass-panel" style={{ textAlign: 'center', padding: '4rem', zIndex: 1, position: 'relative' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Your timeline is currently empty. Start adding activities to see them here!</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', zIndex: 1, position: 'relative' }}>
             {items.sort((a, b) => a.day - b.day).map(item => (
-              <div key={item.id} className="event-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span className="day-badge">Day {item.day}</span>
-                <div>
-                  <h4 style={{ fontSize: '1.25rem', fontWeight: '700' }}>{item.title}</h4>
-                  <div style={{ display: 'flex', gap: '1rem', marginTop: '0.4rem', fontSize: '0.9rem' }}>
-                    <span style={{ color: 'var(--primary)', fontWeight: '600' }}>{item.time || 'Flexible Time'}</span>
-                    <span style={{ color: 'var(--text-muted)' }}>•</span>
-                    <span style={{ color: 'var(--text-muted)' }}>{item.type}</span>
+              <div key={item.id} className="glass-card" style={{ 
+                padding: '1.5rem 2rem', 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '2rem',
+                marginLeft: '15px'
+              }}>
+                <div style={{ 
+                  minWidth: '50px', 
+                  height: '50px', 
+                  background: 'var(--primary)', 
+                  color: 'white', 
+                  borderRadius: '14px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: '800',
+                  boxShadow: '0 8px 16px -4px rgba(99, 102, 241, 0.5)'
+                }}>
+                  <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.8 }}>Day</span>
+                  <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>{item.day}</span>
+                </div>
+
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
+                    <span style={{ fontSize: '1.2rem' }}>{getTypeIcon(item.type)}</span>
+                    <h4 style={{ fontSize: '1.4rem', fontWeight: '700' }}>{item.title}</h4>
+                  </div>
+                  <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: '500' }}>
+                    <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{item.time || 'Flexible Time'}</span>
+                    <span>•</span>
+                    <span>{item.type}</span>
                   </div>
                 </div>
-                <button onClick={() => handleDeleteItem(item.id)} style={{ 
-                  background: 'transparent', 
-                  border: 'none', 
-                  fontSize: '1.2rem', 
-                  cursor: 'pointer',
-                  opacity: 0.5,
-                  transition: 'opacity 0.2s'
-                }} onMouseOver={e => e.currentTarget.style.opacity = '1'} onMouseOut={e => e.currentTarget.style.opacity = '0.5'}>
+
+                <button 
+                  onClick={() => handleDeleteItem(item.id)} 
+                  style={{ 
+                    background: 'var(--primary-light)', 
+                    border: 'none', 
+                    width: '40px',
+                    height: '40px',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
+                  onMouseOut={(e) => e.currentTarget.style.background = 'var(--primary-light)'}
+                >
                   🗑️
                 </button>
               </div>
