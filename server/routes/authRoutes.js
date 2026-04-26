@@ -53,6 +53,10 @@ router.post('/login', async (req, res) => {
 });
 
 // FORGOT PASSWORD - Request Reset
+router.get('/forgot-password', (req, res) => {
+  res.json({ message: 'Forgot password endpoint is alive and active!' });
+});
+
 router.post('/forgot-password', async (req, res) => {
   try {
     const { email } = req.body;
