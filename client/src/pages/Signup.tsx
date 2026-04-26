@@ -27,8 +27,11 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
       try {
         await axios.post(`${API_URL}/auth/register`, { name, email, password });
       } catch (regErr: any) {
-        const msg = regErr.response?.data?.error || 'Registration failed. Try a different email.';
-        setError(msg);
+        if (!regErr.response) {
+          setError('Network Error: Cannot connect to server. If on Vercel, check VITE_API_URL env variable!');
+        } else {
+          setError(regErr.response?.data?.error || 'Registration failed.');
+        }
         setLoading(false);
         return;
       }
@@ -39,7 +42,6 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
         localStorage.setItem('travel_token', res.data.token);
         localStorage.setItem('travel_user', JSON.stringify(res.data.user));
         onSignup(res.data.user);
-        // App.tsx will handle the redirect because the 'user' state changed
       } catch (loginErr: any) {
         setError('Account created! Please log in manually.');
         navigate('/login');
