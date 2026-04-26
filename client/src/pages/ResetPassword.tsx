@@ -54,7 +54,12 @@ const ResetPassword = () => {
       setMessage('Password reset successful! Redirecting to login...');
       setTimeout(() => navigate('/login'), 3000);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to reset password');
+      console.error('Reset Password Error:', err);
+      if (!err.response) {
+        setError('Server connection failed. Is the backend running?');
+      } else {
+        setError(err.response.data?.error || 'Failed to reset password');
+      }
     } finally {
       setLoading(false);
     }

@@ -41,8 +41,11 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
       onSignup(res.data.user);
     } catch (err: any) {
       console.error('Signup Error:', err);
-      const serverMsg = err.response?.data?.error;
-      setError(serverMsg || 'Registration failed. Please try again.');
+      if (!err.response) {
+        setError('Server connection failed. Is the backend running?');
+      } else {
+        setError(err.response.data?.error || 'Registration failed. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
