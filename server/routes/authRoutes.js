@@ -52,4 +52,74 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// FORGOT PASSWORD - Request Reset
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await prisma.user.findUnique({ where: { email } });
+    
+    if (!user) {
+      // For security, don't reveal if user exists. Just say "If account exists..."
+      return res.json({ message: 'If an account exists with that email, a reset link has been generated.' });
+    }
+
+    // Generate a simple numeric token for this demo (or a crypto token)
+    const resetToken = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiry = new Date(Date.now() + 3600000); // 1 hour expiry
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { resetToken, resetTokenExpiry: expiry }
+    });
+
+    // In a real app, you would send an email here.
+    // For this demo, we'll return the token so the user can see it works.
+    console.log(`[RESET TOKEN for ${email}]: ${resetToken}`);
+    
+    res.json({ 
+      message: 'Password reset token generated.', 
+      token: resetToken // Returning token directly so you can test without an email service
+    });
+  } catch (error) {
+    console.error('Forgot Password Error:', error);
+    res.status(500).json({ error: 'Failed to process request' });
+  }
+});
+
+// RESET PASSWORD - Apply New Password
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { email, token, newPassword } = req.body;
+    
+    const user = await prisma.user.findUnique({ where: { email } });
+    
+    if (!user || user.resetToken !== token || newPassword === undefined) {
+      return res.status(400).json({ error: 'Invalid or expired token' });
+    }
+
+    // Check expiry
+    if (user.resetTokenExpiry && new Date() > user.resetTokenExpiry) {
+      return res.status(400).json({ error: 'Token has expired' });
+    }
+
+    // Hash new password
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update user
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { 
+        password: hashedPassword,
+        resetToken: null,
+        resetTokenExpiry: null
+      }
+    });
+
+    res.json({ message: 'Password has been reset successfully' });
+  } catch (error) {
+    console.error('Reset Password Error:', error);
+    res.status(500).json({ error: 'Failed to reset password' });
+  }
+});
+
 module.exports = router;
