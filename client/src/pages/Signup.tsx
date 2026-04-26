@@ -23,17 +23,29 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
     setError('');
 
     try {
-      await axios.post(`${API_URL}/auth/register`, { name, email, password });
-      const res = await axios.post(`${API_URL}/auth/login`, { email, password });
-      localStorage.setItem('travel_token', res.data.token);
-      localStorage.setItem('travel_user', JSON.stringify(res.data.user));
-      onSignup(res.data.user);
-      navigate('/');
+      // Step 1: Register the user
+      try {
+        await axios.post(`${API_URL}/auth/register`, { name, email, password });
+      } catch (regErr: any) {
+        const msg = regErr.response?.data?.error || 'Registration failed. Try a different email.';
+        setError(msg);
+        setLoading(false);
+        return;
+      }
+
+      // Step 2: Automatically log them in
+      try {
+        const res = await axios.post(`${API_URL}/auth/login`, { email, password });
+        localStorage.setItem('travel_token', res.data.token);
+        localStorage.setItem('travel_user', JSON.stringify(res.data.user));
+        onSignup(res.data.user);
+        // App.tsx will handle the redirect because the 'user' state changed
+      } catch (loginErr: any) {
+        setError('Account created! Please log in manually.');
+        navigate('/login');
+      }
     } catch (err: any) {
-      console.error('Signup Error:', err);
-      const serverMsg = err.response?.data?.error;
-      const networkError = !err.response ? 'Connection failed. Check Vercel Env Variables!' : '';
-      setError(serverMsg || networkError || 'Registration failed');
+      setError('An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -42,10 +54,23 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
   return (
     <div style={{ 
       display: 'flex', 
-      minHeight: 'calc(100vh - 80px)',
-      gap: '4rem',
-      alignItems: 'center'
-    }} className="animate-fade-in">
+      flexDirection: 'column',
+      minHeight: 'calc(100vh - 120px)',
+      gap: '2rem',
+      justifyContent: 'center',
+      padding: '1rem 0'
+    }} className="animate-fade-in signup-container">
+      
+      <style>{`
+        @media (min-width: 1024px) {
+          .signup-container { 
+            flex-direction: row !important;
+            gap: 4rem !important;
+            align-items: center;
+          }
+          .hero-side { display: block !important; }
+        }
+      `}</style>
       
       {/* Left Side: Form */}
       <div style={{ flex: 1, display: 'flex', justifyContent: 'center' }}>
@@ -57,13 +82,13 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
 
           {error && (
             <div style={{ 
-              background: 'rgba(239, 68, 68, 0.1)', 
-              color: '#f87171', 
+              background: error.includes('created') ? 'rgba(34, 197, 94, 0.1)' : 'rgba(239, 68, 68, 0.1)', 
+              color: error.includes('created') ? '#4ade80' : '#f87171', 
               padding: '1rem', 
               borderRadius: '12px', 
               marginBottom: '1.5rem',
               fontSize: '0.9rem',
-              border: '1px solid rgba(239, 68, 68, 0.2)'
+              border: `1px solid ${error.includes('created') ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'}`
             }}>
               {error}
             </div>
@@ -112,11 +137,10 @@ const Signup: React.FC<SignupProps> = ({ onSignup }) => {
       </div>
 
       {/* Right Side: Hero */}
-      <div style={{ 
+      <div className="hero-side" style={{ 
         flex: 1, 
-        display: 'none', 
-        '@media (min-width: 1024px)': { display: 'block' } 
-      } as any}>
+        display: 'none'
+      }}>
         <div style={{ position: 'relative' }}>
           <img 
             src={heroImage} 
