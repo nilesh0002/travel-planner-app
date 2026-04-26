@@ -7,6 +7,8 @@ import CreateTrip from './pages/CreateTrip';
 import TripDetails from './pages/TripDetails';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 // Components
 import Navbar from './components/Navbar';
@@ -49,6 +51,8 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/login" element={!user ? <Login onLogin={setUser} /> : <Navigate to="/" />} />
           <Route path="/signup" element={!user ? <Signup onSignup={setUser} /> : <Navigate to="/" />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           
           <Route path="/" element={user ? <Dashboard userId={user.id} /> : <Navigate to="/login" />} />
           <Route path="/create-trip" element={user ? <CreateTrip userId={user.id} /> : <Navigate to="/login" />} />
