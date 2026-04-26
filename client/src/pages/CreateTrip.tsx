@@ -35,19 +35,21 @@ const CreateTrip: React.FC<CreateTripProps> = ({ userId }) => {
   };
 
   return (
-    <main className="animate-fade-in" style={{ maxWidth: '700px', margin: '4rem auto' }}>
-      <header style={{ marginBottom: '3rem' }}>
-        <Link to="/" style={{ color: 'var(--text-muted)', textDecoration: 'none', fontWeight: '600', fontSize: '0.9rem' }}>
+    <main className="animate-fade-in" style={{ maxWidth: '700px', margin: '2rem auto' }}>
+      <header style={{ marginBottom: '2.5rem' }}>
+        <Link to="/" className="nav-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', marginLeft: '-1rem' }}>
           ← Back to Dashboard
         </Link>
-        <h1 style={{ marginTop: '1.5rem', fontSize: '2.8rem', fontWeight: '800', letterSpacing: '-1.5px' }}>Plan a new journey</h1>
+        <h1 style={{ fontSize: '2.5rem', fontWeight: '800', letterSpacing: '-1px' }}>Plan a new journey</h1>
+        <p style={{ color: 'var(--text-muted)', marginTop: '0.5rem' }}>Set your destination and dates to begin.</p>
       </header>
 
-      <section className="glass-panel" style={{ padding: '3.5rem' }}>
+      <section className="glass-panel" style={{ padding: '2.5rem' }}>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Trip Destination / Title</label>
+            <label htmlFor="tripTitle">Trip Destination / Title</label>
             <input 
+              id="tripTitle"
               type="text" 
               placeholder="e.g. Summer in Tokyo" 
               value={title}
@@ -56,10 +58,11 @@ const CreateTrip: React.FC<CreateTripProps> = ({ userId }) => {
             />
           </div>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginTop: '1rem' }}>
+          <div className="date-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginTop: '0.5rem' }}>
             <div className="form-group">
-              <label>Departure Date</label>
+              <label htmlFor="startDate">Departure Date</label>
               <input 
+                id="startDate"
                 type="date" 
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
@@ -67,8 +70,9 @@ const CreateTrip: React.FC<CreateTripProps> = ({ userId }) => {
               />
             </div>
             <div className="form-group">
-              <label>Return Date</label>
+              <label htmlFor="endDate">Return Date</label>
               <input 
+                id="endDate"
                 type="date" 
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
@@ -77,11 +81,11 @@ const CreateTrip: React.FC<CreateTripProps> = ({ userId }) => {
             </div>
           </div>
           
-          <div style={{ marginTop: '3rem', display: 'flex', gap: '1.5rem' }}>
-            <button type="submit" className="btn-primary" style={{ flex: 2 }} disabled={loading}>
-              {loading ? 'Finalizing...' : 'Create Adventure'}
+          <div style={{ marginTop: '2.5rem', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+            <button type="submit" className="btn-primary" style={{ flex: 2, minWidth: '200px' }} disabled={loading}>
+              {loading ? 'Creating Adventure...' : 'Start Planning'}
             </button>
-            <Link to="/" className="btn-secondary" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Link to="/" className="btn-primary btn-secondary" style={{ flex: 1, minWidth: '120px', minHeight: '48px', textDecoration: 'none' }}>
               Cancel
             </Link>
           </div>

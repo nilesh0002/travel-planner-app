@@ -20,7 +20,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [resetToken, setResetToken] = useState(''); // To help user in demo
+  const [resetToken, setResetToken] = useState('');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,27 +42,52 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="auth-container animate-fade-in">
-      <div className="auth-card">
-        <h2>Forgot Password</h2>
-        <p className="auth-subtitle">Enter your email and we'll send you a reset token</p>
+    <div className="animate-fade-in" style={{ 
+      display: 'flex', 
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem 0',
+      minHeight: 'calc(100vh - 120px)'
+    }}>
+      <div className="glass-panel login-card" style={{ maxWidth: '450px' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.75rem', letterSpacing: '-1px' }}>Reset Password</h1>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1rem' }}>
+          Enter your email and we'll send you a reset token to access your account.
+        </p>
 
         {message && (
-          <div className="message-box success">
+          <div style={{ 
+            background: 'rgba(34, 197, 94, 0.1)', 
+            color: '#4ade80', 
+            padding: '1rem', 
+            borderRadius: '12px', 
+            marginBottom: '1.5rem',
+            fontSize: '0.9rem',
+            border: '1px solid rgba(34, 197, 94, 0.2)'
+          }}>
             {message}
-            {resetToken && (
-              <div style={{ marginTop: '10px', padding: '10px', background: '#f0f9ff', color: '#0369a1', borderRadius: '4px', fontWeight: 'bold' }}>
-                DEMO TOKEN: {resetToken}
-              </div>
-            )}
           </div>
         )}
-        {error && <div className="message-box error">{error}</div>}
+
+        {error && (
+          <div style={{ 
+            background: 'rgba(239, 68, 68, 0.1)', 
+            color: '#f87171', 
+            padding: '1rem', 
+            borderRadius: '12px', 
+            marginBottom: '1.5rem',
+            fontSize: '0.9rem',
+            border: '1px solid rgba(239, 68, 68, 0.2)'
+          }}>
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email Address</label>
+            <label htmlFor="email">Email Address</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -71,23 +96,25 @@ const ForgotPassword = () => {
             />
           </div>
 
-          <button type="submit" className="auth-button" disabled={loading}>
+          <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '0.5rem' }} disabled={loading}>
             {loading ? 'Processing...' : 'Send Reset Token'}
           </button>
         </form>
 
-        <div className="auth-footer">
-          <Link to="/login">Back to Login</Link>
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <Link to="/login" className="nav-link" style={{ fontSize: '0.95rem' }}>Back to Login</Link>
         </div>
+
+        {resetToken && (
+          <div className="glass-panel" style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--primary-glow)', background: 'var(--primary-light)' }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 'bold', textTransform: 'uppercase' }}>Demo Recovery Token</p>
+            <code style={{ display: 'block', padding: '0.75rem', background: 'var(--bg-dark)', borderRadius: '8px', color: 'var(--primary)', fontWeight: 'bold', marginBottom: '1rem' }}>{resetToken}</code>
+            <Link to={`/reset-password?email=${email}&token=${resetToken}`} style={{ color: 'var(--primary)', fontWeight: '700', textDecoration: 'none', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              Proceed to Reset →
+            </Link>
+          </div>
+        )}
       </div>
-      
-      {resetToken && (
-        <div className="auth-footer" style={{ marginTop: '20px' }}>
-          <Link to={`/reset-password?email=${email}&token=${resetToken}`} style={{ color: '#2563eb', fontWeight: 'bold' }}>
-            Go to Reset Page →
-          </Link>
-        </div>
-      )}
     </div>
   );
 };

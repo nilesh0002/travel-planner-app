@@ -47,61 +47,63 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
         alignItems: 'center',
         marginBottom: '3rem',
         flexWrap: 'wrap',
-        gap: '2rem'
+        gap: '1.5rem'
       }}>
         <div>
-          <h1 style={{ fontSize: '3.5rem', fontWeight: '800' }}>My <span className="text-gradient">Adventures</span></h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', marginTop: '0.5rem' }}>
-            {trips.length} upcoming journeys waiting for you
+          <h1 style={{ fontWeight: '800' }}>My <span className="text-gradient">Adventures</span></h1>
+          <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '0.25rem' }}>
+            {trips.length} {trips.length === 1 ? 'journey' : 'journeys'} waiting for you
           </p>
         </div>
-        <Link to="/create-trip" className="btn-primary" style={{ padding: '1rem 2rem', fontSize: '1.1rem' }}>
-          + Plan New Trip
+        <Link to="/create-trip" className="btn-primary">
+          <span>+</span> Plan New Trip
         </Link>
       </header>
 
       <section>
         {trips.length === 0 ? (
-          <div className="glass-panel" style={{ textAlign: 'center', padding: '8rem 2rem' }}>
-            <div style={{ fontSize: '5rem', marginBottom: '2rem' }}>🧭</div>
+          <div className="glass-panel" style={{ textAlign: 'center', padding: '6rem 2rem' }}>
+            <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🧭</div>
             <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Your map is currently empty</h2>
-            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '3rem', maxWidth: '500px', margin: '0 auto 3rem' }}>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2.5rem', maxWidth: '500px', margin: '0 auto 2.5rem' }}>
               The world is vast and full of wonders. Start planning your first itinerary today and let the journey begin.
             </p>
-            <Link to="/create-trip" className="btn-primary">Start Your First Plan</Link>
+            <Link to="/create-trip" className="btn-primary" style={{ minWidth: '200px' }}>Start Your First Plan</Link>
           </div>
         ) : (
           <div className="trip-grid">
             {trips.map((trip) => (
-              <Link key={trip.id} to={`/trip/${trip.id}`} className="glass-card" style={{ padding: '2rem', textDecoration: 'none' }}>
+              <Link key={trip.id} to={`/trip/${trip.id}`} className="glass-card trip-card" style={{ padding: '2rem', textDecoration: 'none', display: 'block' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                   <div style={{ 
                     padding: '0.8rem', 
                     background: 'var(--primary-light)', 
                     borderRadius: '16px',
-                    fontSize: '1.5rem'
+                    fontSize: '1.5rem',
+                    color: 'var(--primary)'
                   }}>
                     🏝️
                   </div>
                   <span style={{ 
-                    fontSize: '0.75rem', 
-                    fontWeight: '700', 
+                    fontSize: '0.7rem', 
+                    fontWeight: '800', 
                     textTransform: 'uppercase', 
                     letterSpacing: '0.1em',
                     padding: '0.4rem 0.8rem',
-                    background: 'rgba(16, 185, 129, 0.1)',
-                    color: 'var(--secondary)',
-                    borderRadius: '20px'
+                    background: 'var(--primary-light)',
+                    color: 'var(--primary)',
+                    borderRadius: '20px',
+                    border: '1px solid var(--primary-glow)'
                   }}>
                     Upcoming
                   </span>
                 </div>
                 
-                <h3 style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--text-main)', marginBottom: '1rem' }}>{trip.title}</h3>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'var(--text-main)', marginBottom: '0.75rem' }}>{trip.title}</h3>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-muted)' }}>
                   <span style={{ fontSize: '1.1rem' }}>📅</span>
-                  <p style={{ fontSize: '1rem', fontWeight: '500' }}>
+                  <p style={{ fontSize: '0.95rem', fontWeight: '500' }}>
                     {new Date(trip.start_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })} — {new Date(trip.end_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                   </p>
                 </div>
@@ -114,17 +116,17 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
                   justifyContent: 'space-between',
                   alignItems: 'center'
                 }}>
-                  <span style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.95rem' }}>View Itinerary</span>
+                  <span style={{ color: 'var(--primary)', fontWeight: '700', fontSize: '0.9rem' }}>View Itinerary</span>
                   <div style={{ 
-                    width: '36px', 
-                    height: '36px', 
+                    width: '32px', 
+                    height: '32px', 
                     background: 'var(--primary)', 
-                    borderRadius: '12px',
+                    borderRadius: '10px',
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
                     color: 'white',
-                    boxShadow: '0 8px 16px -4px rgba(99, 102, 241, 0.4)'
+                    boxShadow: '0 4px 12px var(--primary-glow)'
                   }}>→</div>
                 </div>
               </Link>

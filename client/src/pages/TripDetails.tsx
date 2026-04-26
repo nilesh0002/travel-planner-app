@@ -58,6 +58,7 @@ const TripDetails: React.FC = () => {
   };
 
   const handleDeleteItem = async (itemId: string) => {
+    if (!window.confirm('Delete this activity?')) return;
     try {
       await axios.delete(`${API_URL}/itinerary/${itemId}`);
       setItems(items.filter(i => i.id !== itemId));
@@ -78,9 +79,12 @@ const TripDetails: React.FC = () => {
 
   if (loading) return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '60vh' }}>
-      <h2 className="text-gradient">Loading itinerary...</h2>
+      <div className="animate-pulse" style={{ fontSize: '1.5rem', fontWeight: '700', color: 'var(--primary)' }}>
+        Loading itinerary...
+      </div>
     </div>
   );
+  
   if (!trip) return <div className="container"><h2>Adventure not found</h2></div>;
 
   const getTypeIcon = (type: ItemType) => {
@@ -94,45 +98,39 @@ const TripDetails: React.FC = () => {
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: '5rem' }}>
-      <header style={{ marginBottom: '4rem' }}>
-        <Link to="/" style={{ 
-          color: 'var(--text-muted)', 
-          textDecoration: 'none', 
-          fontSize: '0.95rem', 
-          fontWeight: '600',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '0.5rem',
-          marginBottom: '2rem'
-        }}>
+      <header style={{ marginBottom: '3rem' }}>
+        <Link to="/" className="nav-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', marginLeft: '-1rem' }}>
           ← Back to Dashboard
         </Link>
         
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '2rem' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1.5rem' }}>
           <div>
-            <h1 style={{ fontSize: '3.5rem', fontWeight: '800' }}>{trip.title}</h1>
-            <div style={{ marginTop: '0.75rem', display: 'flex', gap: '2rem', flexWrap: 'wrap' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
-                <span style={{ fontSize: '1.2rem' }}>📅</span>
-                <span style={{ fontWeight: '500' }}>{new Date(trip.start_date).toLocaleDateString()} — {new Date(trip.end_date).toLocaleDateString()}</span>
+            <h1 style={{ fontWeight: '800' }}>{trip.title}</h1>
+            <div style={{ marginTop: '0.75rem', display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+                <span>📅</span>
+                <span style={{ fontWeight: '500' }}>
+                  {new Date(trip.start_date).toLocaleDateString()} — {new Date(trip.end_date).toLocaleDateString()}
+                </span>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)' }}>
-                <span style={{ fontSize: '1.2rem' }}>📍</span>
-                <span style={{ fontWeight: '500' }}>{items.length} Activities</span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-muted)', fontSize: '0.95rem' }}>
+                <span>📍</span>
+                <span style={{ fontWeight: '500' }}>{items.length} {items.length === 1 ? 'Activity' : 'Activities'}</span>
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem' }}>
             <button onClick={handleDeleteTrip} style={{ 
-              background: 'rgba(239, 68, 68, 0.1)', 
+              background: 'rgba(239, 68, 68, 0.05)', 
               color: '#f87171',
-              border: '1px solid rgba(239, 68, 68, 0.2)',
-              padding: '0.8rem 1.5rem',
+              border: '1px solid rgba(239, 68, 68, 0.1)',
+              padding: '0.75rem 1.25rem',
               borderRadius: '12px',
               fontWeight: '600',
-              cursor: 'pointer'
-            }}>Delete Trip</button>
-            <button onClick={() => setShowForm(!showForm)} className="btn-primary" style={{ padding: '0.8rem 2rem' }}>
+              cursor: 'pointer',
+              fontSize: '0.9rem'
+            }}>Delete</button>
+            <button onClick={() => setShowForm(!showForm)} className="btn-primary" style={{ minHeight: 'auto', padding: '0.75rem 1.5rem' }}>
               {showForm ? 'Cancel' : '+ Add Activity'}
             </button>
           </div>
@@ -140,29 +138,21 @@ const TripDetails: React.FC = () => {
       </header>
 
       {showForm && (
-        <section className="glass-panel animate-fade-in" style={{ padding: '3rem', marginBottom: '4rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '2rem' }}>Add New Activity</h2>
+        <section className="glass-panel animate-fade-in" style={{ padding: '2.5rem', marginBottom: '3rem' }}>
+          <h2 style={{ fontSize: '1.5rem', marginBottom: '2rem' }}>New Activity</h2>
           <form onSubmit={handleAddItem}>
             <div className="form-group">
-              <label>Activity Title</label>
-              <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} required placeholder="e.g. Morning Walk at Central Park" />
+              <label htmlFor="activityTitle">Activity Title</label>
+              <input id="activityTitle" type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} required placeholder="e.g. Morning Walk at Central Park" />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
               <div className="form-group">
-                <label>Day Number</label>
-                <input type="number" min="1" value={newDay} onChange={e => setNewDay(parseInt(e.target.value))} required />
+                <label htmlFor="dayNumber">Day Number</label>
+                <input id="dayNumber" type="number" min="1" value={newDay} onChange={e => setNewDay(parseInt(e.target.value))} required />
               </div>
               <div className="form-group">
-                <label>Category</label>
-                <select value={newType} onChange={e => setNewType(e.target.value as ItemType)} style={{
-                   width: '100%',
-                   padding: '0.8rem 1.2rem',
-                   background: 'rgba(255, 255, 255, 0.03)',
-                   border: '1px solid var(--glass-border)',
-                   borderRadius: '12px',
-                   color: 'var(--text-main)',
-                   fontSize: '1rem'
-                }}>
+                <label htmlFor="category">Category</label>
+                <select id="category" value={newType} onChange={e => setNewType(e.target.value as ItemType)}>
                   <option value="Activity">🎡 Activity</option>
                   <option value="Flight">✈️ Flight</option>
                   <option value="Hotel">🏨 Hotel</option>
@@ -170,87 +160,101 @@ const TripDetails: React.FC = () => {
                 </select>
               </div>
               <div className="form-group">
-                <label>Time (Optional)</label>
-                <input type="text" placeholder="e.g. 09:00 AM" value={newTime} onChange={e => setNewTime(e.target.value)} />
+                <label htmlFor="time">Time (Optional)</label>
+                <input id="time" type="text" placeholder="e.g. 09:00 AM" value={newTime} onChange={e => setNewTime(e.target.value)} />
               </div>
             </div>
-            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem', padding: '1.2rem' }}>Add to Timeline</button>
+            <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem' }}>Add to Timeline</button>
           </form>
         </section>
       )}
 
-      <section style={{ position: 'relative' }}>
-        {/* Timeline Line */}
-        <div style={{
-          position: 'absolute',
-          left: '25px',
-          top: '0',
-          bottom: '0',
-          width: '2px',
-          background: 'linear-gradient(to bottom, var(--primary), var(--secondary))',
-          opacity: 0.3,
-          zIndex: 0
-        }}></div>
+      <section style={{ position: 'relative', marginTop: '2rem' }}>
+        {items.length > 0 && (
+          <div style={{
+            position: 'absolute',
+            left: '32px',
+            top: '0',
+            bottom: '0',
+            width: '2px',
+            background: 'linear-gradient(to bottom, var(--primary), var(--secondary))',
+            opacity: 0.2,
+            zIndex: 0
+          }}></div>
+        )}
 
         {items.length === 0 ? (
           <div className="glass-panel" style={{ textAlign: 'center', padding: '4rem', zIndex: 1, position: 'relative' }}>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Your timeline is currently empty. Start adding activities to see them here!</p>
           </div>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', zIndex: 1, position: 'relative' }}>
-            {items.sort((a, b) => a.day - b.day).map(item => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', zIndex: 1, position: 'relative' }}>
+            {items.sort((a, b) => {
+              if (a.day !== b.day) return a.day - b.day;
+              return (a.time || '').localeCompare(b.time || '');
+            }).map(item => (
               <div key={item.id} className="glass-card" style={{ 
-                padding: '1.5rem 2rem', 
+                padding: '1.25rem 1.5rem', 
                 display: 'flex', 
                 alignItems: 'center', 
-                gap: '2rem',
-                marginLeft: '15px'
+                gap: '1.5rem',
+                marginLeft: '0'
               }}>
                 <div style={{ 
-                  minWidth: '50px', 
-                  height: '50px', 
-                  background: 'var(--primary)', 
-                  color: 'white', 
-                  borderRadius: '14px',
+                  minWidth: '64px', 
+                  height: '64px', 
+                  background: 'var(--bg-dark)', 
+                  border: '1px solid var(--primary-glow)',
+                  color: 'var(--primary)', 
+                  borderRadius: '16px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   justifyContent: 'center',
                   fontWeight: '800',
-                  boxShadow: '0 8px 16px -4px rgba(99, 102, 241, 0.5)'
+                  boxShadow: 'var(--card-shadow)',
+                  zIndex: 2
                 }}>
-                  <span style={{ fontSize: '0.65rem', textTransform: 'uppercase', opacity: 0.8 }}>Day</span>
-                  <span style={{ fontSize: '1.2rem', lineHeight: 1 }}>{item.day}</span>
+                  <span style={{ fontSize: '0.6rem', textTransform: 'uppercase', opacity: 0.7 }}>Day</span>
+                  <span style={{ fontSize: '1.4rem', lineHeight: 1 }}>{item.day}</span>
                 </div>
 
                 <div style={{ flex: 1 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '1.2rem' }}>{getTypeIcon(item.type)}</span>
-                    <h4 style={{ fontSize: '1.4rem', fontWeight: '700' }}>{item.title}</h4>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+                    <span style={{ fontSize: '1.1rem' }}>{getTypeIcon(item.type)}</span>
+                    <h4 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-main)' }}>{item.title}</h4>
                   </div>
-                  <div style={{ display: 'flex', gap: '1.5rem', color: 'var(--text-muted)', fontSize: '0.95rem', fontWeight: '500' }}>
+                  <div style={{ display: 'flex', gap: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '500' }}>
                     <span style={{ color: 'var(--primary)', fontWeight: '700' }}>{item.time || 'Flexible Time'}</span>
                     <span>•</span>
-                    <span>{item.type}</span>
+                    <span style={{ textTransform: 'capitalize' }}>{item.type}</span>
                   </div>
                 </div>
 
                 <button 
                   onClick={() => handleDeleteItem(item.id)} 
+                  aria-label="Delete Activity"
                   style={{ 
                     background: 'var(--primary-light)', 
                     border: 'none', 
-                    width: '40px',
-                    height: '40px',
+                    width: '36px',
+                    height: '36px',
                     borderRadius: '10px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     cursor: 'pointer',
-                    transition: 'all 0.2s'
+                    transition: 'all 0.2s',
+                    color: 'var(--text-muted)'
                   }}
-                  onMouseOver={(e) => e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)'}
-                  onMouseOut={(e) => e.currentTarget.style.background = 'var(--primary-light)'}
+                  onMouseOver={(e) => {
+                    e.currentTarget.style.background = 'rgba(239, 68, 68, 0.1)';
+                    e.currentTarget.style.color = '#f87171';
+                  }}
+                  onMouseOut={(e) => {
+                    e.currentTarget.style.background = 'var(--primary-light)';
+                    e.currentTarget.style.color = 'var(--text-muted)';
+                  }}
                 >
                   🗑️
                 </button>
