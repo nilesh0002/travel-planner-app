@@ -38,8 +38,11 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
       onLogin(res.data.user);
     } catch (err: any) {
       console.error('Login Error:', err);
-      const serverMsg = err.response?.data?.error;
-      setError(serverMsg || 'Invalid email or password');
+      if (!err.response) {
+        setError('Server connection failed. Is the backend running?');
+      } else {
+        setError(err.response.data?.error || 'Invalid email or password');
+      }
     } finally {
       setLoading(false);
     }

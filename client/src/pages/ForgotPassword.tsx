@@ -35,7 +35,12 @@ const ForgotPassword = () => {
         setResetToken(response.data.token);
       }
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Something went wrong');
+      console.error('Forgot Password Error:', err);
+      if (!err.response) {
+        setError('Server connection failed. Please ensure the backend is running.');
+      } else {
+        setError(err.response.data?.error || 'Failed to process request. Please try again.');
+      }
     } finally {
       setLoading(false);
     }
@@ -50,7 +55,7 @@ const ForgotPassword = () => {
       minHeight: 'calc(100vh - 120px)'
     }}>
       <div className="glass-panel login-card" style={{ maxWidth: '450px' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.75rem', letterSpacing: '-1px' }}>Reset Password</h1>
+        <h1 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.75rem', letterSpacing: '-1px' }}>Forgot Password</h1>
         <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1rem' }}>
           Enter your email and we'll send you a reset token to access your account.
         </p>
@@ -63,7 +68,8 @@ const ForgotPassword = () => {
             borderRadius: '12px', 
             marginBottom: '1.5rem',
             fontSize: '0.9rem',
-            border: '1px solid rgba(34, 197, 94, 0.2)'
+            border: '1px solid rgba(34, 197, 94, 0.2)',
+            animation: 'fadeIn 0.3s ease'
           }}>
             {message}
           </div>
@@ -77,7 +83,8 @@ const ForgotPassword = () => {
             borderRadius: '12px', 
             marginBottom: '1.5rem',
             fontSize: '0.9rem',
-            border: '1px solid rgba(239, 68, 68, 0.2)'
+            border: '1px solid rgba(239, 68, 68, 0.2)',
+            animation: 'fadeIn 0.3s ease'
           }}>
             {error}
           </div>
@@ -106,7 +113,7 @@ const ForgotPassword = () => {
         </div>
 
         {resetToken && (
-          <div className="glass-panel" style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--primary-glow)', background: 'var(--primary-light)' }}>
+          <div className="glass-panel" style={{ marginTop: '2rem', padding: '1.5rem', border: '1px solid var(--primary-glow)', background: 'var(--primary-light)', animation: 'fadeIn 0.4s ease' }}>
             <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem', fontWeight: 'bold', textTransform: 'uppercase' }}>Demo Recovery Token</p>
             <code style={{ display: 'block', padding: '0.75rem', background: 'var(--bg-dark)', borderRadius: '8px', color: 'var(--primary)', fontWeight: 'bold', marginBottom: '1rem' }}>{resetToken}</code>
             <Link to={`/reset-password?email=${email}&token=${resetToken}`} style={{ color: 'var(--primary)', fontWeight: '700', textDecoration: 'none', fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
