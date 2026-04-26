@@ -68,13 +68,11 @@ router.post('/forgot-password', async (req, res) => {
     const expiry = new Date(Date.now() + 3600000); // 1 hour expiry
 
     await prisma.user.update({
-      where: { id: user.id },
+      where: { email: email },
       data: { resetToken, resetTokenExpiry: expiry }
     });
 
-    // In a real app, you would send an email here.
-    // For this demo, we'll return the token so the user can see it works.
-    console.log(`[RESET TOKEN for ${email}]: ${resetToken}`);
+    console.log(`✅ [SUCCESS] Reset token generated for ${email}: ${resetToken}`);
     
     res.json({ 
       message: 'Password reset token generated.', 
