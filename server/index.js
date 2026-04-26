@@ -22,10 +22,21 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());              // Allow requests from React frontend
 app.use(express.json());      // Parse JSON bodies
 
-// API Routes
+// Request Logger for debugging production connections
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
+
+// API Routes - Flexible mounting to handle various environment configurations
 app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
+
 app.use('/api/trips', tripRoutes);
+app.use('/trips', tripRoutes);
+
 app.use('/api/itinerary', itineraryRoutes);
+app.use('/itinerary', itineraryRoutes);
 
 // Simple health check route
 app.get('/', (req, res) => {
