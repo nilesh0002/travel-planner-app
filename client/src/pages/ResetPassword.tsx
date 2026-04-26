@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const getApiUrl = () => {
@@ -61,18 +61,52 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="auth-container animate-fade-in">
-      <div className="auth-card">
-        <h2>Set New Password</h2>
-        <p className="auth-subtitle">Enter your reset token and new password</p>
+    <div className="animate-fade-in" style={{ 
+      display: 'flex', 
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: '2rem 0',
+      minHeight: 'calc(100vh - 120px)'
+    }}>
+      <div className="glass-panel login-card" style={{ maxWidth: '480px' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.75rem', letterSpacing: '-1px' }}>Set New Password</h1>
+        <p style={{ color: 'var(--text-muted)', marginBottom: '2.5rem', fontSize: '1rem' }}>
+          Enter your reset token and your new chosen password.
+        </p>
 
-        {message && <div className="message-box success">{message}</div>}
-        {error && <div className="message-box error">{error}</div>}
+        {message && (
+          <div style={{ 
+            background: 'rgba(34, 197, 94, 0.1)', 
+            color: '#4ade80', 
+            padding: '1rem', 
+            borderRadius: '12px', 
+            marginBottom: '1.5rem',
+            fontSize: '0.9rem',
+            border: '1px solid rgba(34, 197, 94, 0.2)'
+          }}>
+            {message}
+          </div>
+        )}
+
+        {error && (
+          <div style={{ 
+            background: 'rgba(239, 68, 68, 0.1)', 
+            color: '#f87171', 
+            padding: '1rem', 
+            borderRadius: '12px', 
+            marginBottom: '1.5rem',
+            fontSize: '0.9rem',
+            border: '1px solid rgba(239, 68, 68, 0.2)'
+          }}>
+            {error}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email Address</label>
+            <label htmlFor="email">Email Address</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -81,8 +115,9 @@ const ResetPassword = () => {
           </div>
 
           <div className="form-group">
-            <label>Reset Token</label>
+            <label htmlFor="token">Reset Token</label>
             <input
+              id="token"
               type="text"
               value={token}
               onChange={(e) => setToken(e.target.value)}
@@ -91,32 +126,40 @@ const ResetPassword = () => {
             />
           </div>
 
-          <div className="form-group">
-            <label>New Password</label>
-            <input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-            />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
+            <div className="form-group">
+              <label htmlFor="newPassword">New Password</label>
+              <input
+                id="newPassword"
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="confirmPassword">Confirm Password</label>
+              <input
+                id="confirmPassword"
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder="••••••••"
+                required
+              />
+            </div>
           </div>
 
-          <div className="form-group">
-            <label>Confirm New Password</label>
-            <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-            />
-          </div>
-
-          <button type="submit" className="auth-button" disabled={loading}>
+          <button type="submit" className="btn-primary" style={{ width: '100%', marginTop: '1rem' }} disabled={loading}>
             {loading ? 'Updating...' : 'Reset Password'}
           </button>
         </form>
+
+        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+          <Link to="/login" className="nav-link" style={{ fontSize: '0.95rem' }}>Back to Login</Link>
+        </div>
       </div>
     </div>
   );
