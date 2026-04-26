@@ -155,6 +155,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </form>
 
           <p style={{ textAlign: 'center', marginTop: '2.5rem', color: 'var(--text-muted)' }}>
+            <Link to="/forgot-password" style={{ color: 'var(--primary)', textDecoration: 'none', display: 'block', marginBottom: '0.5rem', fontSize: '0.9rem' }}>Forgot Password?</Link>
             New traveler? <Link to="/signup" style={{ color: 'var(--primary)', fontWeight: '600', textDecoration: 'none' }}>Create an account</Link>
           </p>
         </div>
