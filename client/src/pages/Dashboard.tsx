@@ -49,6 +49,12 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
         flexWrap: 'wrap',
         gap: '1.5rem'
       }}>
+        <style>{`
+          @media (max-width: 480px) {
+            .empty-state-icon { font-size: 3rem !important; margin-bottom: 0.5rem !important; }
+            .empty-state-container { padding: 3rem 1.5rem !important; }
+          }
+        `}</style>
         <div>
           <h1 style={{ fontWeight: '800' }}>My <span className="text-gradient">Adventures</span></h1>
           <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '0.25rem' }}>
@@ -62,8 +68,8 @@ const Dashboard: React.FC<DashboardProps> = ({ userId }) => {
 
       <section>
         {trips.length === 0 ? (
-          <div className="glass-panel" style={{ textAlign: 'center', padding: '6rem 2rem' }}>
-            <div style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🧭</div>
+          <div className="glass-panel empty-state-container" style={{ textAlign: 'center', padding: '6rem 2rem' }}>
+            <div className="empty-state-icon" style={{ fontSize: '4rem', marginBottom: '1.5rem' }}>🧭</div>
             <h2 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Your map is currently empty</h2>
             <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginBottom: '2.5rem', maxWidth: '500px', margin: '0 auto 2.5rem' }}>
               The world is vast and full of wonders. Start planning your first itinerary today and let the journey begin.

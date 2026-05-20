@@ -98,6 +98,16 @@ const TripDetails: React.FC = () => {
 
   return (
     <main className="animate-fade-in" style={{ paddingBottom: '5rem' }}>
+      <style>{`
+        @media (max-width: 480px) {
+          .timeline-line { left: 24px !important; }
+          .day-circle { min-width: 48px !important; height: 48px !important; border-radius: 12px !important; }
+          .day-circle span:last-child { font-size: 1.1rem !important; }
+          .day-circle span:first-child { font-size: 0.5rem !important; }
+          .trip-header-actions { flex-direction: column; width: 100%; }
+          .trip-header-actions button { width: 100%; }
+        }
+      `}</style>
       <header style={{ marginBottom: '3rem' }}>
         <Link to="/" className="nav-link" style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', marginLeft: '-1rem' }}>
           ← Back to Dashboard
@@ -119,7 +129,7 @@ const TripDetails: React.FC = () => {
               </div>
             </div>
           </div>
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div className="trip-header-actions" style={{ display: 'flex', gap: '0.75rem' }}>
             <button onClick={handleDeleteTrip} style={{ 
               background: 'rgba(239, 68, 68, 0.05)', 
               color: '#f87171',
@@ -145,7 +155,7 @@ const TripDetails: React.FC = () => {
               <label htmlFor="activityTitle">Activity Title</label>
               <input id="activityTitle" type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} required placeholder="e.g. Morning Walk at Central Park" />
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '1rem' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '1rem' }}>
               <div className="form-group">
                 <label htmlFor="dayNumber">Day Number</label>
                 <input id="dayNumber" type="number" min="1" value={newDay} onChange={e => setNewDay(parseInt(e.target.value))} required />
@@ -171,7 +181,7 @@ const TripDetails: React.FC = () => {
 
       <section style={{ position: 'relative', marginTop: '2rem' }}>
         {items.length > 0 && (
-          <div style={{
+          <div className="timeline-line" style={{
             position: 'absolute',
             left: '32px',
             top: '0',
@@ -200,7 +210,7 @@ const TripDetails: React.FC = () => {
                 gap: '1.5rem',
                 marginLeft: '0'
               }}>
-                <div style={{ 
+                <div className="day-circle" style={{ 
                   minWidth: '64px', 
                   height: '64px', 
                   background: 'var(--bg-dark)', 

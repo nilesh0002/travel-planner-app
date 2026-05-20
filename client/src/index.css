@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap');
 
 :root {
+  color-scheme: dark;
   /* Default: Teal Ocean (Dark Mode) */
   --bg-dark: #041014;
   --bg-panel: rgba(13, 31, 38, 0.7);
@@ -22,6 +23,7 @@
 }
 
 [data-theme='light'] {
+  color-scheme: light;
   --bg-dark: #f8fafc;
   --bg-panel: rgba(255, 255, 255, 0.8);
   --bg-card: #ffffff;
@@ -40,10 +42,15 @@
   --nav-bg: rgba(255, 255, 255, 0.8);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -52,6 +59,7 @@ body {
   color: var(--text-main);
   line-height: 1.6;
   overflow-x: hidden;
+  overscroll-behavior-y: none; /* Prevents bouncy scroll on mobile */
   transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s ease;
   min-height: 100vh;
 }
