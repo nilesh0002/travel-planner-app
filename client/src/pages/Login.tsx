@@ -167,6 +167,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               </button>
             </form>
 
+            {loading && (
+              <div style={{ 
+                marginTop: '1rem', 
+                textAlign: 'center', 
+                fontSize: '0.85rem', 
+                color: 'var(--text-muted)',
+                animation: 'fadeIn 1s ease-in'
+              }}>
+                <p>Connecting to backend...</p>
+                <p style={{ fontSize: '0.75rem', opacity: 0.7 }}>If the server was asleep, this may take up to 50 seconds.</p>
+              </div>
+            )}
+
             <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
               <Link to="/forgot-password" style={{ color: 'var(--primary)', textDecoration: 'none', display: 'block', marginBottom: '0.75rem', fontSize: '0.95rem' }}>Forgot Password?</Link>
               <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>

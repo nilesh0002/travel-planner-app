@@ -34,6 +34,12 @@ const App: React.FC = () => {
       setUser(JSON.parse(savedUser));
     }
     setLoading(false);
+
+    // Early ping to wake up Render backend in the background
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    fetch(`${apiUrl}/health`).catch(() => {
+      // Ignore errors, we just want to wake up the server
+    });
   }, []);
 
   const handleLogout = () => {
